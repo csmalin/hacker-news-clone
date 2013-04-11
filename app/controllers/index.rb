@@ -1,7 +1,7 @@
 get '/' do
   if session[:user_id]
     @user = User.find(session[:user_id])
-  end  
+  end
   @posts = Post.last(30).reverse
   erb :index
 end
@@ -45,19 +45,30 @@ end
 get '/posts/:id' do
   if session[:user_id]
     @user = User.find(session[:user_id])
-  end  
+  end
   @post = Post.find(params[:id])
   erb :show_post
 end
 
+post '/posts/:id/upvote' do
+  if session[:user_id]
+    if Post.find(params[:id]).post_votes.find_by_user_id(session[:user_id])
+      redirect "/posts/#{params[:id]}"
+    else
+      PostVote.create(:post_id => params[:id], :user_id => session[:user_id])
+      redirect("/posts/#{params[:id]}")
+    end
+  end
+end
+
 post '/upvote/:id' do
-  @post = Post.find(params[:id])  
+  @post = Post.find(params[:id])
 end
 
 get '/users/:id' do
   if session[:user_id]
     @user = User.find(session[:user_id])
-  end  
+  end
   @user = User.find(params[:id])
 
   erb :user_profile
@@ -66,7 +77,7 @@ end
 get '/comments' do
   if session[:user_id]
     @user = User.find(session[:user_id])
-  end  
+  end
   @comments = Comment.last(30)
 
   erb :show_comments

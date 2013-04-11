@@ -1,8 +1,13 @@
 
   <% @posts.each_with_index do |p, i| %>
   <div class="post">
-    <p class="title"><%= "#{i+1}. "%><img src="/img/grayarrow.gif"><a href=<%= p.link %>><%=" #{p.title}"%></a></p>
-    
+    <p class="title"><%= "#{i+1}. "%>
+    	<form class="upvote_form" method="post" action="/posts/<%= p.id %>/upvote">
+    		<input type="image" src="/img/grayarrow.gif"
+class="submit"  value=""/>
+			</form>
+    </a><a href=<%= p.link %>><%=" #{p.title}"%></a></p>
+
     <p class="votes"><%= "#{p.post_votes.length} points by " %> <a href="<%= "/users/#{p.user.id}"%>"><%= p.user.name %></a> | <a href=<%="/posts/#{p.id}"%>><%= p.comments.length %> comments</a></p>
   </div>
   <% end %>
