@@ -1,12 +1,12 @@
 <div class="show_post">
-  <p><a href="<%= @post.link %>"><%= @post.title %></a></p>
+  <p><img src="/img/grayarrow.gif"><a href="<%= @post.link %>"><%= @post.title %></a></p>
   <p class="show_post_votes"><%= "#{@post.post_votes.length} points by " %> <a href="<%= "/users/#{@post.user.id}"%>"><%= @post.user.name %></a> | <a href=<%="/posts/#{@post.id}"%>><%= @post.comments.length %> comments</a></p>
   <p><%= @post.body %></p>
   <%= erb(:_comment) if session[:user_id] %>
 </div>
   <% @post.comments.each do |c| %>
     <div class="show_post_comment">
-      <p><a href="/users/<%=c.user.id%>"><%= c.user.name %></a>
+      <p><img src="/img/grayarrow.gif"><a href="/users/<%=c.user.id%>"><%= c.user.name %></a>
       <br>
       <%= c.body %></p>
     </div>

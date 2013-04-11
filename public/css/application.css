@@ -9,6 +9,10 @@ a {
   color: black;
 }
 
+a:visited {
+  color: #9A9A9A;
+}
+
 .nav {
   background-color: #FF6600;
   padding-left: 5px;
@@ -107,3 +111,5 @@ a {
   font-size: .65em;
   margin: 0px;
 }
+
+

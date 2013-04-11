@@ -62,3 +62,16 @@ get '/users/:id' do
 
   erb :user_profile
 end
+
+get '/comments' do
+  if session[:user_id]
+    @user = User.find(session[:user_id])
+  end  
+  @comments = Comment.last(30)
+
+  erb :show_comments
+end
+
+
+
+

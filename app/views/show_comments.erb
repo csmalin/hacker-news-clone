@@ -1,0 +1,7 @@
+
+<% @comments.each do |c| %>
+<div class="each_comment">
+  <p><img src="/img/grayarrow.gif"><a href="/users/<%= c.user.id %>"><%= c.user.name %></a></p>
+  <p><%= c.body %></p>
+</div>
+<% end %>
