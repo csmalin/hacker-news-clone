@@ -1,8 +1,23 @@
 get '/' do
   if session[:user_id]
     @user = User.find(session[:user_id])
+  end  
+  all_posts = Post.all
+  posts_by_vote = []
+  all_posts.each do |p|
+    posts_by_vote << { :id => p.id,
+                       :votes => p.post_votes.length }
   end
-  @posts = Post.last(30).reverse
+
+  posts_hashes_sorted = posts_by_vote.sort do |a, b|
+    b[:votes] <=> a[:votes]
+  end
+
+  @posts = posts_hashes_sorted.map do |hash|
+    Post.find(hash[:id])
+  end
+
+  # @posts = Post.last(30).reverse
   erb :index
 end
 
@@ -22,13 +37,17 @@ get '/login' do
 end
 
 post '/login' do
-  user = User.authenticate(params[:user][:name],params[:user][:password])
+  @user = User.authenticate(params[:user][:name],params[:user][:password])
   # raise user.inspect
-  session[:user_id] = user.id
+  session[:user_id] = @user.id
+
   redirect '/'
 end
 
 get '/submit' do
+  if session[:user_id]
+    @user = User.find(session[:user_id])
+  end  
   if signed_in?
     erb :create_post
   else
@@ -37,9 +56,11 @@ get '/submit' do
 end
 
 post '/new_post' do
-  post = Post.create(params,
+  post = Post.create(:title => params[:post][":title"],
+                     :link => params[:post][":link"],
+                     :body => params[:post][":body"],
                      :user_id => session[:user_id])
-  redirect '/posts/:post.id'
+  redirect "/posts/#{post.id}"
 end
 
 get '/posts/:id' do
