@@ -99,11 +99,27 @@ get '/comments' do
   if session[:user_id]
     @user = User.find(session[:user_id])
   end
-  @comments = Comment.last(30)
+  @comments = Comment.last(30).reverse
 
   erb :show_comments
 end
 
+post '/posts/:post_id/add_comment' do
+  if session[:user_id]
+    comment = Comment.create(:body => params[:text],
+                   :post_id => params[:post_id],
+                   :user_id => session[:user_id])
+  end
+  redirect "/posts/#{params[:post_id]}"
+end
 
+get '/new' do
+  if session[:user_id]
+    @user = User.find(session[:user_id])
+  end
+  @posts = Post.last(30).reverse
+
+  erb :index
+end
 
 
