@@ -13,11 +13,31 @@
   <link rel="stylesheet" href="/css/application.css">
 
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script>
   <script src="/js/application.js"></script>
 
   <title></title>
 </head>
 <body>
-  <%= yield %>
+  <div class="container">
+    <div class="nav">
+      <img src="/img/GuyFawkes.png">
+      <span class="left_nav">
+        <a href="/">Fawkes News</a>
+        <a href="/new">new</a>
+        <a href="/comments">comments</a>
+        <a href="/submit">submit</a>
+      </span>
+      <span class="right_nav">
+        <% if session[:user_id] %>
+          <a href="/users/<%= @user.id %>"><%= @user.name %></a>
+          <a href="/logout">logout</a>
+        <% else %>
+          <a href="/login">login</a>
+        <% end %>
+      </span>
+    </div>
+    <%= yield %>
+  </div>
 </body>
 </html>
